@@ -337,7 +337,7 @@ def Creargrupo():
 #Usaremos esta función para crear el fichero .ldif que usaremos para crear los usuarios
 def CrearUsuarios():
 
-    usuario = (pedirValor("\033[95mQue nombre quieres darle al usuario\n"))
+    usuario = (pedirValor("\033[95mQue nombre quieres darle al usuario\033[0m\n"))
 
     if comprueba_espacios_puntos(usuario):
         print("\033[31mLas unidades organizativas no pueden contener \033[0mespacios\033[31m ni "
@@ -347,8 +347,8 @@ def CrearUsuarios():
         with open('Nombres_usuarios.txt') as file:
             contents = file.read()
         if encontrar_basico(contents, usuario) is False:
-            apellido = (pedirValor("Cual es el apellido del usuario\n"))
-            display = (pedirValor("Elige un nombre de display\n"))
+            apellido = (pedirValor("\033[95mCual es el apellido del usuario\033[0m\n"))
+            display = (pedirValor("\033[95mElige un nombre de display\033[0m\n"))
 
             # Creo un bucle que no se rompa hasta que el usuario escriba el nombre de una OU existente
             loop = False
