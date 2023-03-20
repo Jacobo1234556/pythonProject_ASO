@@ -39,7 +39,7 @@ def creacionficheros():
         os.system(creacion_fichero)
 
     if os.path.isfile('OU_grupo.txt') is False:
-        creacion_fichero = ('touch Nombres_usuarios.txt')
+        creacion_fichero = ('touch OU_grupo.txt')
         os.system(creacion_fichero)
 
 #Usaremos está función para encontrar determinadas palabras dentro de los archivos que voy a crear
