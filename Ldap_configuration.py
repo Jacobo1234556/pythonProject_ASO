@@ -43,7 +43,7 @@ def creacionficheros():
         os.system(creacion_fichero)
 
 #Usaremos está función para encontrar determinadas palabras dentro de los archivos que voy a crear
-def encontrar(texto, palabra):
+def encontrar_basico(texto, palabra):
 
     busqueda = "." + " " + palabra + " " + "."
     if busqueda in texto:
@@ -53,7 +53,7 @@ def encontrar(texto, palabra):
 
 #Usaremos está función para encontrar determinadas palabras dentro de los archivos
 # que empiecen por determinadas letras, y saque esa palabra por pantalla
-def encontrar2(texto, palabro):
+def encontrar_primera_palabra(texto, palabro):
 
     with open(texto, 'r') as archivo:
         lineas = archivo.readlines()
@@ -66,7 +66,7 @@ def encontrar2(texto, palabro):
 
 #Usaremos está función para encontrar determinadas palabras dentro de los archivos
 # que estén entre paréntesis y si se encuentrá devuelve "True"
-def encontrar3(texto, palabra):
+def encontrar_parentesis(texto, palabra):
 
     res = re.findall(r'\(.*?\)', texto)
 
@@ -79,7 +79,7 @@ def encontrar3(texto, palabra):
 
 #Usaremos esta función para encontrar determinadas palabras dentro de los archivos
 # que estén entre corchetes y si se encuentrá devuelve "True"
-def encontrar4(texto, palabra):
+def encontrar_corchetes(texto, palabra):
 
     res = re.findall(r'\[.*?\]', texto)
 
@@ -92,7 +92,7 @@ def encontrar4(texto, palabra):
 
 #Usaremos esta función para encontrar frases que empiecen determinadas palabras dentro de los archivos
 # y saque esas frases por pantalla
-def encontrar5(texto, palabra):
+def encontrar_primera_print(texto, palabra):
 
     lineas_empiezan = []
 
@@ -106,7 +106,7 @@ def encontrar5(texto, palabra):
 #Usaremos esta función para encontrar determinadasfrases que empiecen por
 #Una palabra determinada y contengan otra palabra dentro de un archivo
 # y si se cumplen dichas condiciones devuelve "True"
-def encontrar6(texto, palabra, palabra2):
+def encontrar_principio_existe(texto, palabra, palabra2):
     lineas = texto.split("\n")
 
     palabro = "(" + palabra2 + ")"
@@ -221,7 +221,7 @@ def CrearOu():
         with open('Nombres_ou.txt') as file:
             contents = file.read()
 
-        if encontrar(contents, unidad_o) is False:
+        if encontrar_basico(contents, unidad_o) is False:
 
             # Escribimos los datos dentro del fichero
             f = open("crear_ou.ldif", "a")
@@ -260,7 +260,7 @@ def Creargrupo():
 
         with open('Nombres_ou.txt') as file:
             contents = file.read()
-            if encontrar(contents, unidad_2) is True:
+            if encontrar_basico(contents, unidad_2) is True:
                 loop= True
             else:
                 print('\033[31mEsa unidad organizativa no existe\033[0m')
@@ -277,7 +277,7 @@ def Creargrupo():
                 contents = file.read()
 
             #Si el nombre de el grupo es encontrado comienza la configuración del fichero
-            if encontrar(contents, grupo) is False:
+            if encontrar_basico(contents, grupo) is False:
 
                 # Empiezo dando 500 de numero 'gid' al primer usuario y
                 # si ya existe un grupo con ese número le doy el 501 y así sucesivamente
@@ -286,7 +286,7 @@ def Creargrupo():
                 while not loop3:
                     with open('gid.txt') as file:
                         contents = file.read()
-                    if encontrar(contents, str(gid)) is True:
+                    if encontrar_basico(contents, str(gid)) is True:
                         gid= gid + 1
                     else:
                         #Guardo los datos de los gid ya dados en un documento
@@ -346,7 +346,7 @@ def CrearUsuarios():
         #Compruebo que el nombre de usuario dado no existe en nuestro servidor
         with open('Nombres_usuarios.txt') as file:
             contents = file.read()
-        if encontrar(contents, usuario) is False:
+        if encontrar_basico(contents, usuario) is False:
             apellido = (pedirValor("Cual es el apellido del usuario\n"))
             display = (pedirValor("Elige un nombre de display\n"))
 
@@ -359,13 +359,13 @@ def CrearUsuarios():
                 with open('grupos_ou.txt') as file:
                     contents = file.read()
 
-                if encontrar4(contents, unidad_3) is True:
+                if encontrar_corchetes(contents, unidad_3) is True:
                     loop = True
 
                 else:
                     print('\033[31mEsa unidad organizativa no existe\033[0m')
 
-                encontrar2('grupos_ou.txt', unidad_3)
+                encontrar_primera_palabra('grupos_ou.txt', unidad_3)
 
             # Creo un bucle que no se rompa hasta que el usuario escriba
             # el nombre de un grupo que exista dentro de esa unidad
@@ -375,14 +375,14 @@ def CrearUsuarios():
                 with open('OU_grupo.txt') as file:
                     contents = file.read()
 
-                encontrar5(contents, unidad_3)
+                encontrar_primera_print(contents, unidad_3)
 
                 grupo_2 = (pedirValor("\n\033[95mEn que grupo quieres crearlo:\033[0m\n"))
 
                 with open('OU_grupo.txt') as file:
                     contents = file.read()
 
-                if encontrar6(contents ,unidad_3, grupo_2) is True:
+                if encontrar_principio_existe(contents , unidad_3, grupo_2) is True:
 
                     # Escribimos los datos dentro del fichero
                     f = open("crear_usuarios.ldif", "a")
@@ -403,7 +403,7 @@ def CrearUsuarios():
 
                 else:
                     print("\033[31mEse grupo no existe en la Unidad organizativa\033[0m")
-                    encontrar2('grupos_ou.txt', unidad_3)
+                    encontrar_primera_palabra('grupos_ou.txt', unidad_3)
         else:
             listausuarios()
             print("Ese usuario ya existe escoge otro")
