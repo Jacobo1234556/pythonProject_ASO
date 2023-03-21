@@ -55,32 +55,6 @@ def encontrar_basico(texto, palabra):
     else:
         return False
 
-#Usaremos está función para encontrar determinadas palabras dentro de los archivos
-# que empiecen por determinadas letras, y saque esa palabra por pantalla
-def encontrar_primera_palabra(texto, palabro):
-
-    with open(texto, 'r') as archivo:
-        lineas = archivo.readlines()
-        for linea in lineas:
-            linea = linea.rstrip()
-            palabras = linea.split()
-            for palabra in palabras:
-                if palabra.startswith(palabro):
-                    print(palabra)
-
-#Usaremos está función para encontrar determinadas palabras dentro de los archivos
-# que estén entre paréntesis y si se encuentrá devuelve "True"
-def encontrar_parentesis(texto, palabra):
-
-    res = re.findall(r'\(.*?\)', texto)
-
-    palabro = "(" + palabra + ")"
-
-    if palabro in res:
-        return True
-    else:
-        return False
-
 #Usaremos esta función para encontrar determinadas palabras dentro de los archivos
 # que estén entre corchetes y si se encuentrá devuelve "True"
 def encontrar_corchetes(texto, palabra):
@@ -123,7 +97,8 @@ def encontrar_principio_existe(texto, palabra, palabra2):
 #Usaremos esta funcion para comprobar que no hay varaibles ni puntos dentro de una variables
 #Ya que este codigo no lo permite
 def comprueba_espacios_puntos(variable):
-    if ' ' in variable or '.' in variable:
+    if ' ' in variable or '.' in variable or '(' in variable or ')' in variable \
+            or '[' in variable or ']' in variable:
         return True
     else:
         return False
@@ -218,8 +193,9 @@ def CrearOu():
 
     unidad_o = (pedirValor("\n\033[95mQue nombre quieres darle a la unidad organizativa:\033[0m\n"))
     if comprueba_espacios_puntos(unidad_o):
-        print("\033[31mLas unidades organizativas no pueden contener \033[0mespacios\033[31m ni "
-              "\033[0mpuntos\033[31m si quieres separar palabras utiliza '_'\033[0m")
+        print("\033[31mLas unidades organizativas no pueden contener \033[0mespacios\033[31m, ni "
+              "\033[0mpuntos\033[31m, ni \033[0mparentesis\033[31m "
+              "si quieres separar palabras utiliza '_'\033[0m")
     else:
         #Comprobamos que el nombre del ou dado no existe en nuestro servidor
         with open('Nombres_ou.txt') as file:
@@ -274,8 +250,9 @@ def Creargrupo():
     while not loop2:
         grupo = (pedirValor("\033[95mQue nombre quieres darle a tu grupo:\033[0m\n"))
         if comprueba_espacios_puntos(grupo):
-            print("\033[31mLas unidades organizativas no pueden contener \033[0mespacios\033[31m ni "
-                  "\033[0mpuntos\033[31m si quieres separar palabras utiliza '_'\033[0m")
+            print("\033[31mLas unidades organizativas no pueden contener \033[0mespacios\033[31m, ni "
+                  "\033[0mpuntos\033[31m, ni \033[0mparentesis\033[31m "
+                  "si quieres separar palabras utiliza '_'\033[0m")
         else:
             with open('Nombres_grupos.txt') as file:
                 contents = file.read()
@@ -344,8 +321,9 @@ def CrearUsuarios():
     usuario = (pedirValor("\033[95mQue nombre quieres darle al usuario\033[0m\n"))
 
     if comprueba_espacios_puntos(usuario):
-        print("\033[31mLas unidades organizativas no pueden contener \033[0mespacios\033[31m ni "
-              "\033[0mpuntos\033[31m si quieres separar palabras utiliza '_'\033[0m")
+        print("\033[31mLas unidades organizativas no pueden contener \033[0mespacios\033[31m, ni "
+              "\033[0mpuntos\033[31m, ni \033[0mparentesis\033[31m "
+              "si quieres separar palabras utiliza '_'\033[0m")
     else:
         #Compruebo que el nombre de usuario dado no existe en nuestro servidor
         with open('Nombres_usuarios.txt') as file:
@@ -369,18 +347,14 @@ def CrearUsuarios():
                 else:
                     print('\033[31mEsa unidad organizativa no existe\033[0m')
 
-                encontrar_primera_palabra('grupos_ou.txt', unidad_3)
-
             # Creo un bucle que no se rompa hasta que el usuario escriba
             # el nombre de un grupo que exista dentro de esa unidad
             loop4 = False
             while not loop4:
-
                 with open('OU_grupo.txt') as file:
                     contents = file.read()
 
                 encontrar_primera_print(contents, unidad_3)
-
                 grupo_2 = (pedirValor("\n\033[95mEn que grupo quieres crearlo:\033[0m\n"))
 
                 with open('OU_grupo.txt') as file:
@@ -390,7 +364,8 @@ def CrearUsuarios():
 
                     # Escribimos los datos dentro del fichero
                     f = open("crear_usuarios.ldif", "a")
-                    f.write("dn: uid=" + str(usuario) + ",cn=" + str(grupo_2) + ",ou=" + str(unidad_3) + ",dc=" + str(
+                    f.write("dn: uid=" + str(usuario) + ",cn=" + str(grupo_2) + ",ou="
+                            + str(unidad_3) + ",dc=" + str(
                         lista[0]) + ",dc=" + str(lista[1]) + "\n"
                         "objectClass: inetOrgPerson\n"
                         "uid:" + str(usuario) + "\n"
@@ -407,7 +382,6 @@ def CrearUsuarios():
 
                 else:
                     print("\033[31mEse grupo no existe en la Unidad organizativa\033[0m")
-                    encontrar_primera_palabra('grupos_ou.txt', unidad_3)
         else:
             listausuarios()
             print("Ese usuario ya existe escoge otro")
@@ -477,6 +451,7 @@ while not isSalir:
         listarou()
         listagrupo()
         listausuarios()
+        listargrupos_ou()
 
     elif (Opciones == "5"):
 
