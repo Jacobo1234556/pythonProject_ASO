@@ -46,7 +46,7 @@ def creacionficheros():
         creacion_fichero = ('touch OU_grupo.txt')
         os.system(creacion_fichero)
 
-Usaremos está función para encontrar determinadas palabras dentro de los archivos que voy a crear
+#Usaremos está función para encontrar determinadas palabras dentro de los archivos que voy a crear
 def encontrar_basico(texto, palabra):
 
     busqueda = "." + " " + palabra + " " + "."
