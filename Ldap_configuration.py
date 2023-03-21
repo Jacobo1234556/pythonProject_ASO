@@ -39,7 +39,7 @@ def creacionficheros():
         os.system(creacion_fichero)
 
     if os.path.isfile('grupos_ou.txt') is False:
-        creacion_fichero = ('touch OU_grupo.txt')
+        creacion_fichero = ('touch grupos_ou.txt')
         os.system(creacion_fichero)
 
     if os.path.isfile('OU_grupo.txt') is False:
